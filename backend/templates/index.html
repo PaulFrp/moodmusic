@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>MoodMusic 🎵</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <h1>MoodMusic 🎶</h1>
+        <p>Get music recommendations that match your vibe</p>
+
+        <form method="get" action="/">
+            <input type="text" name="mood" placeholder="Enter a mood (e.g. chill, energetic)" value="{{ mood or '' }}">
+            <button type="submit">Recommend</button>
+        </form>
+
+        {% if tracks %}
+        <h2>Recommendations for "<span>{{ mood }}</span>"</h2>
+        <div class="grid">
+            {% for t in tracks %}
+            <a href="{{ t.url }}" class="card" target="_blank">
+                <img src="{{ t.image or '/static/default.jpg' }}" alt="{{ t.title }}">
+                <div class="info">
+                    <h3>{{ t.title }}</h3>
+                    <p>{{ t.artist }}</p>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        {% elif mood %}
+        <p>No results found for "{{ mood }}" 😢</p>
+        {% endif %}
+    </div>
+</body>
+
+</html>
