@@ -72,3 +72,40 @@ python app.py
 Flask will start a local web server at:
 
 👉 http://127.0.0.1:5000
+
+## 🧠 Emotion → Mood Detection (Ruicong's Module)
+
+We added an AI module that converts **free-form emotional text** into a simple
+**mood keyword** used by the music recommender.
+
+### Usage Example
+\`\`\`python
+from emotion_detection import detect_mood
+
+mood = detect_mood("I'm feeling a bit overwhelmed but hopeful.")
+print(mood)  # -> "chill" / "happy" / "sad" / "angry" / "surprised"
+\`\`\`
+
+### Output Contract
+- Input: text describing how the user feels
+- Output: one of:
+  > `happy`, `sad`, `angry`, `chill`, `surprised`
+- Low confidence → fallback to `chill` ✅
+
+### Integration with Paul's Retrieving Logic
+\`\`\`python
+tracks = get_tracks_by_mood(mood, k=10)
+\`\`\`
+
+✅ Complete pipeline enabled:  
+Emotion → Mood → Music Recommendations
+
+✅ Fully reproducible using our provided code
+
+✅ Scalable to business contexts:
+- Well-being support playlists
+- Customer sentiment adaptation
+- Personalized marketing
+- Ethical & privacy-aware AI automation
+
+---
