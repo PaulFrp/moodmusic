@@ -66,14 +66,15 @@ ini
 Copier le code
 LASTFM_API_KEY=your_api_key_here
 5. Run the app
-```bash
+bash
 Copier le code
 python app.py
 Flask will start a local web server at:
 
 👉 http://127.0.0.1:5000
 
-## 🧠 Emotion → Mood Detection (Ruicong's Module)
+
+### 🧠 Emotion → Mood Detection (Ruicong's Module)
 
 We added an AI module that converts **free-form emotional text** into a simple
 **mood keyword** used by the music recommender.
