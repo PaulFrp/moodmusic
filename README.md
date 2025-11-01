@@ -79,12 +79,12 @@ We added an AI module that converts **free-form emotional text** into a simple
 **mood keyword** used by the music recommender.
 
 ### Usage Example
-\`\`\`python
+```python
 from emotion_detection import detect_mood
 
 mood = detect_mood("I'm feeling a bit overwhelmed but hopeful.")
 print(mood)  # -> "chill" / "happy" / "sad" / "angry" / "surprised"
-\`\`\`
+```
 
 ### Output Contract
 - Input: text describing how the user feels
@@ -93,9 +93,9 @@ print(mood)  # -> "chill" / "happy" / "sad" / "angry" / "surprised"
 - Low confidence → fallback to `chill` ✅
 
 ### Integration with Paul's Retrieving Logic
-\`\`\`python
+```python
 tracks = get_tracks_by_mood(mood, k=10)
-\`\`\`
+```
 
 ✅ Complete pipeline enabled:  
 Emotion → Mood → Music Recommendations
