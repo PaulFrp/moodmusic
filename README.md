@@ -66,7 +66,7 @@ ini
 Copier le code
 LASTFM_API_KEY=your_api_key_here
 5. Run the app
-bash
+```bash
 Copier le code
 python app.py
 Flask will start a local web server at:
