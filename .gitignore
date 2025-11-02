@@ -1,2 +1,29 @@
 **/.env
 node_modules
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual envs
+venv/
+.env/
+.env
+
+# Hugging Face / Transformers cache
+.cache/
+models/
+*.bin
+*.pt
+*.ckpt
+
+# OS / IDE
+.DS_Store
+.idea/
+.vscode/
+
+# Databases or local data
+*.db
+instance/

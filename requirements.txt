@@ -1,6 +1,5 @@
 Flask
+gunicorn
+transformers[sentencepiece]
 requests
 python-dotenv
-torch
-transformers
-gunicorn
