@@ -8,6 +8,10 @@ def text_to_mood(text: str) -> str:
     """
     try:
         mood = detect_mood(text)
-        return mood if mood in {"happy", "sad", "angry", "chill", "surprised"} else "chill"
-    except Exception:
+        if mood not in {"happy", "sad", "angry", "chill", "surprised"}:
+            print(f"⚠️ detect_mood returned unexpected value: {mood}")
+            return "chill"
+        return mood
+    except Exception as e:
+        print(f"❌ Exception in text_to_mood: {e}")
         return "chill"
