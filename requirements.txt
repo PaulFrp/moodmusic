@@ -3,4 +3,3 @@ gunicorn
 transformers[sentencepiece]
 requests
 python-dotenv
-torch==2.3.1
