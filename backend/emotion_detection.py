@@ -1,57 +1,53 @@
 # emotion_detection.py
 import os
-os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"  # fix OpenMP on macOS
+import requests
 
-print(">>> Starting program...")
+API_URL = "https://api-inference.huggingface.co/models/bhadresh-savani/distilbert-base-uncased-emotion"
+API_TOKEN = os.getenv("HF_API_TOKEN")  # Set this in Heroku config vars
 
-from transformers import pipeline
-
-MODEL_NAME = "bhadresh-savani/distilbert-base-uncased-emotion"  # lighter & fast
-
-print(f">>> Loading model: {MODEL_NAME} (first run will download the model)")
-emotion_cls = pipeline(
-    task="text-classification",
-    model=MODEL_NAME,
-    return_all_scores=False
-)
-print(">>> Model loaded.")
+headers = {"Authorization": f"Bearer {API_TOKEN}"}
 
 def detect_emotion(text: str) -> str:
+    """Call Hugging Face API to get emotion label."""
     if not text or not text.strip():
         return "neutral"
-    result = emotion_cls(text)[0]  # {'label': 'joy', 'score': ...}
-    label = result["label"].lower().strip()
-    mapping = {
-        "joy": "joy", "happiness": "joy", "love": "joy", "optimism": "joy",
-        "sadness": "sadness", "grief": "sadness",
-        "anger": "anger", "annoyance": "anger",
-        "fear": "fear", "anxiety": "fear", "nervousness": "fear",
-        "surprise": "surprise",
-    }
-    return mapping.get(label, "neutral")
+
+    payload = {"inputs": text}
+    try:
+        response = requests.post(API_URL, headers=headers, json=payload, timeout=10)
+        response.raise_for_status()
+        result = response.json()
+
+        # Result format: [{'label': 'joy', 'score': 0.95}]
+        label = result[0]["label"].lower().strip() if isinstance(result, list) else "neutral"
+
+        mapping = {
+            "joy": "joy", "happiness": "joy", "love": "joy", "optimism": "joy",
+            "sadness": "sadness", "grief": "sadness",
+            "anger": "anger", "annoyance": "anger",
+            "fear": "fear", "anxiety": "fear", "nervousness": "fear",
+            "surprise": "surprise",
+        }
+        return mapping.get(label, "neutral")
+    except Exception:
+        return "neutral"
+
 
 def detect_mood(text: str) -> str:
-    """
-    Convert detailed emotion label to simple mood keyword for music retrieval.
-    Output will be one of: happy, sad, angry, chill, surprised
-    """
-    raw_emotion = detect_emotion(text)  # you already have this function
-
+    """Map emotion to mood for music retrieval."""
+    raw_emotion = detect_emotion(text)
     mapping = {
         "joy": "happy",
         "sadness": "sad",
         "anger": "angry",
         "fear": "chill",
         "surprise": "surprised",
-        "neutral": "chill"  # safety fallback
+        "neutral": "chill"
     }
-
     return mapping.get(raw_emotion, "chill")
 
 
-
 if __name__ == "__main__":
-    print(">>> Running quick tests...")
     samples = [
         "I just got promoted and I'm so excited!",
         "Today is awful. I feel empty.",
@@ -61,4 +57,3 @@ if __name__ == "__main__":
     ]
     for s in samples:
         print(s, "->", detect_emotion(s))
-    print(">>> Done.")
