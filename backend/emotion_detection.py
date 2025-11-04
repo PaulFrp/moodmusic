@@ -1,11 +1,16 @@
 # emotion_detection.py
 import os
 import requests
+from dotenv import load_dotenv
+
+load_dotenv()  # <-- add this line early!
 
 HF_API_TOKEN = os.environ.get("HF_API_TOKEN")
 MODEL_NAME = "bhadresh-savani/distilbert-base-uncased-emotion"
-API_URL = f"https://api-inference.huggingface.co/models/{MODEL_NAME}"
+API_URL = f"https://router.huggingface.co/hf-inference/models/{MODEL_NAME}"
 HEADERS = {"Authorization": f"Bearer {HF_API_TOKEN}"}
+
+print(">>> Loaded HF_API_TOKEN:", bool(HF_API_TOKEN))
 
 print(">>> Starting program...")
 
